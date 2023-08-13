@@ -31,11 +31,11 @@ renderer.setSize(sizes.width, sizes.height);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.update(); // Make sure to call this after any change to the controls
 
-//Game loop with
+//Game loop
 function animate() {
-  requestAnimationFrame(animate);
   mesh.rotation.x += 0.01;
   mesh.rotation.y += 0.01;
   renderer.render(scene, camera);
 }
-animate();
+
+renderer.setAnimationLoop(animate);
