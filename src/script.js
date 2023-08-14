@@ -2,6 +2,11 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import * as dat from 'dat.gui';
 import gsap from "gsap"
+import {RGBELoader} from "three/examples/jsm/loaders/RGBELoader.js"
+
+
+const hdrTextureURL = new URL('../img/christmas_photo_studio_07_4k.hdr', import.meta.url)
+
 
 // Scene
 const scene = new THREE.Scene();
@@ -45,32 +50,52 @@ camera.position.z = 3;
 camera.position.y = 3;
 scene.add(camera);
 
-window.addEventListener("mousedown", function(){
-  gsap.to(camera.position, {
-    z:14,
-    duration:1.5,
-    onUpdate:function(){
-      camera.lookAt(0,0,0)
-    }
-  })
+//GSAP
+// const tl = gsap.timeline()
+// window.addEventListener("mousedown", function(){
+//   tl.to(camera.position, {
+//     z:14,
+//     duration:1.5,
+//     onUpdate:function(){
+//       camera.lookAt(0,0,0)
+//     }
+//   })
 
 
-  gsap.to(camera.position, {
-    y:14,
-    duration:1.5,
-    onUpdate:function(){
-      camera.lookAt(0,0,0)
-    }
-  })
+//   tl.to(camera.position, {
+//     y:14,
+//     duration:1.5,
+//     onUpdate:function(){
+//       camera.lookAt(0,0,0)
+//     }
+//   })
+
+//   tl.to(camera.position, {
+//     x:10,
+//     z:10,
+//     y:4,
+//     duration:1.5,
+//     onUpdate:function(){
+//       camera.lookAt(0,0,0)
+//     }
+//   })
+// })
+
+
+//HDRI
+
+const loader = new RGBELoader()
+loader.load(hdrTextureURL, function (texture) {
+  texture.mapping = THREE.EquirectangularReflectionMapping;
+  scene.background = texture
 })
-
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector("canvas.webgl"),
 });
 renderer.setSize(sizes.width, sizes.height);
-
+renderer.outputEncoding = THREE.sRGBEncoding;
 
 //DAT.GUI
 // const gui = new dat.GUI();
