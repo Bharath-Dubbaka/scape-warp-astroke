@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 
 const hdrTextureURL = new URL(
-  "../img/christmas_photo_studio_07_4k.hdr",
+  "../img/sunflowers_puresky_4k.hdr",
   import.meta.url
 );
 
@@ -45,36 +45,45 @@ const sizes = {
 
 // Camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
-camera.position.z = 3;
-camera.position.y = 3;
+camera.position.z = 5;
+camera.position.y = -0.5;
 scene.add(camera);
 
 //GSAP
 // const tl = gsap.timeline()
 // window.addEventListener("mousedown", function(){
 //   tl.to(camera.position, {
-//     z:14,
+//     z:4,
 //     duration:1.5,
 //     onUpdate:function(){
-//       camera.lookAt(0,0,0)
+//       // camera.lookAt(0,0,0)
 //     }
 //   })
 
 //   tl.to(camera.position, {
-//     y:14,
+//     x:4,
 //     duration:1.5,
 //     onUpdate:function(){
-//       camera.lookAt(0,0,0)
+//       // camera.lookAt(0,0,0)
 //     }
 //   })
 
 //   tl.to(camera.position, {
 //     x:10,
 //     z:10,
-//     y:4,
+//     // y:4,
 //     duration:1.5,
 //     onUpdate:function(){
-//       camera.lookAt(0,0,0)
+//       // camera.lookAt(0,0,0)
+//     }
+//   })
+//   tl.to(camera.position, {
+//     x:8,
+//     // z:-10,
+    
+//     duration:1.5,
+//     onUpdate:function(){
+//       // camera.lookAt(0,0,0)
 //     }
 //   })
 // })
@@ -86,7 +95,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 2.0;
+renderer.toneMappingExposure = 1.5;
 
 //HDRI
 const loader = new RGBELoader();
@@ -104,20 +113,22 @@ loader.load(hdrTextureURL, function (texture) {
     })
   );
   scene.add(sphere);
-  sphere.position.x = 1.5
+  sphere.position.x = 3
 
   const sphere2 = new THREE.Mesh(
     new THREE.SphereGeometry(1, 50, 50),
     new THREE.MeshStandardMaterial({
       roughness: 0,
       metalness:0.5,
-      color:0x00FF00
+      color:0xFFFFFF
     })
   );
   scene.add(sphere2);
-  sphere2.position.x = -1.5
+  sphere2.position.x = 0.5
   
 });
+
+
 //DAT.GUI
 // const gui = new dat.GUI();
 
@@ -143,11 +154,16 @@ loader.load(hdrTextureURL, function (texture) {
 // ORBIT CONTROLS
 const orbitControls = new OrbitControls(camera, renderer.domElement);
 orbitControls.update(); // Make sure to call this after any change to the controls and camera.position
+// orbitControls.autoRotate = true
 
 //Game loop
 function animate() {
   // mesh.rotation.x += 0.01;
   // mesh.rotation.y += 0.01;
+
+
+
+
   renderer.render(scene, camera);
 }
 
