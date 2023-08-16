@@ -154,7 +154,7 @@ loader.load(hdrTextureURL, function (texture) {
 // ORBIT CONTROLS
 const orbitControls = new OrbitControls(camera, renderer.domElement);
 orbitControls.autoRotate = true
-// orbitControls
+orbitControls.autoRotateSpeed = 7
 
 //Game loop
 function animate() {
