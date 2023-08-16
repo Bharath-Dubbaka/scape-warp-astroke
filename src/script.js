@@ -46,7 +46,7 @@ const sizes = {
 // Camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
 camera.position.z = 5;
-camera.position.y = -0.5;
+// camera.position.y = -0.5;
 scene.add(camera);
 
 //GSAP
@@ -153,8 +153,8 @@ loader.load(hdrTextureURL, function (texture) {
 
 // ORBIT CONTROLS
 const orbitControls = new OrbitControls(camera, renderer.domElement);
-orbitControls.update(); // Make sure to call this after any change to the controls and camera.position
-// orbitControls.autoRotate = true
+orbitControls.autoRotate = true
+// orbitControls
 
 //Game loop
 function animate() {
@@ -162,6 +162,7 @@ function animate() {
   // mesh.rotation.y += 0.01;
 
 
+  orbitControls.update(); // Make sure to call this after any change to the controls and camera.position
 
 
   renderer.render(scene, camera);
