@@ -82,10 +82,15 @@ scene.add(camera);
 //   })
 // })
 
-// Renderer
+// Renderer using with canvas
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector("canvas#webgl"),
 });
+
+// Renderer without canvas
+// const renderer = new THREE.WebGLRenderer();
+// document.body.appendChild(renderer.domElement);
+
 renderer.setSize(sizes.width, sizes.height);
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -166,7 +171,6 @@ const orbitControls = new OrbitControls(camera, renderer.domElement);
 orbitControls.autoRotate = true;
 orbitControls.autoRotateSpeed = 7;
 
-let step = 0;
 
 //Game loop
 function animate() {

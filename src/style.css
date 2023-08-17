@@ -9,3 +9,18 @@ body {
     margin: 0;
     padding: 0;
  }
+
+
+ #gameCanvas {
+    position: relative;
+  }
+  #insideText1 {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+  }
+  #insideText2 {
+    position: absolute;
+    left: 20px;
+    top: 400px;
+  }
