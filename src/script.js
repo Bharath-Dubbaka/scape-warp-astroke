@@ -5,7 +5,6 @@ import * as dat from "dat.gui";
 //most likely there is something in your css that breaks its layout
 //https://discourse.threejs.org/t/dat-gui-is-not-displaying-as-expected/52498
 //after trail and error it was due to     overflow:hidden;  in css
-
 import gsap from "gsap";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 
@@ -116,8 +115,6 @@ const gui = new dat.GUI();
 //     mesh.material.wireframe = e;
 // });
 
-
-
 //HDRI
 const loader = new RGBELoader();
 loader.load(hdrTextureURL, function (texture) {
@@ -150,7 +147,6 @@ loader.load(hdrTextureURL, function (texture) {
 
   //DAT GUI inside HDRI
   // const gui = new dat.GUI();
-
   const options = {
     sphereColor: "#ffea00",
     wireframe: false,
@@ -176,9 +172,7 @@ orbitControls.autoRotateSpeed = 7;
 function animate() {
   // mesh.rotation.x += 0.01;
   // mesh.rotation.y += 0.01;
-
   orbitControls.update(); // Make sure to call this after any change to the controls and camera.position
-
   renderer.render(scene, camera);
 }
 
