@@ -1,6 +1,11 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import * as dat from "dat.gui";
+//NOTE: CSS if enabled will cause problems and will not show control panel of dat.gui
+//most likely there is something in your css that breaks its layout
+//https://discourse.threejs.org/t/dat-gui-is-not-displaying-as-expected/52498
+//after trail and error it was due to     overflow:hidden;  in css
+
 import gsap from "gsap";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 
@@ -14,7 +19,7 @@ const scene = new THREE.Scene();
 
 // Object
 // const geometry = new THREE.BoxGeometry(1, 1, 1);
-// const material = new THREE.MeshBasicMaterial({ color: 0xff00ff });
+// const material = new THREE.MeshBasicMaterial({ color: 0xff00ff , wireframe: true} );
 // const mesh = new THREE.Mesh(geometry, material);
 // scene.add(mesh);
 
@@ -31,17 +36,6 @@ const sizes = {
 // // Grid Helper
 // const gridHelper = new THREE.GridHelper(30);
 // scene.add(gridHelper);
-
-//SPHERE
-// const sphereGeometry = new THREE.SphereGeometry(1, 50, 50);
-// const sphereMaterial = new THREE.MeshBasicMaterial({
-//   color: 0x9900ff,
-//   wireframe: false,
-// });
-// const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-// scene.add(sphere);
-// sphere.position.set(-5, 5, 5);
-// sphere.castShadow = true;
 
 // Camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
@@ -80,7 +74,7 @@ scene.add(camera);
 //   tl.to(camera.position, {
 //     x:8,
 //     // z:-10,
-    
+
 //     duration:1.5,
 //     onUpdate:function(){
 //       // camera.lookAt(0,0,0)
@@ -90,12 +84,34 @@ scene.add(camera);
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
-  canvas: document.querySelector("canvas.webgl"),
+  canvas: document.querySelector("canvas#webgl"),
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.5;
+
+//DAT.GUI instantiated outside
+const gui = new dat.GUI();
+//NOTE: CSS if enabled will cause problems and will not show control panel of dat.gui
+//most likely there is something in your css that breaks its layout
+//https://discourse.threejs.org/t/dat-gui-is-not-displaying-as-expected/52498
+//after trail and error it was due to     overflow:hidden;  in css
+
+// const options = {
+//   sphereColor: '#ffea00',
+//   wireframe: false,
+// };
+
+// gui.addColor(options, 'sphereColor').onChange(function(e){
+//   mesh.material.color.set(e);
+// });
+
+// gui.add(options, 'wireframe').onChange(function(e){
+//     mesh.material.wireframe = e;
+// });
+
+
 
 //HDRI
 const loader = new RGBELoader();
@@ -104,66 +120,60 @@ loader.load(hdrTextureURL, function (texture) {
   scene.background = texture;
   scene.environment = texture;
 
-  const sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 50, 50),
-    new THREE.MeshStandardMaterial({
-      roughness: 0,
-      metalness:0.5,
-      color:0xFFEA00
-    })
-  );
-  scene.add(sphere);
-  sphere.position.x = 3
-
   const sphere2 = new THREE.Mesh(
     new THREE.SphereGeometry(1, 50, 50),
     new THREE.MeshStandardMaterial({
       roughness: 0,
-      metalness:0.5,
-      color:0xFFFFFF
+      metalness: 0.5,
+      color: 0xffea00,
     })
   );
   scene.add(sphere2);
-  sphere2.position.x = 0.5
-  
+  sphere2.position.x = 3;
+
+  const sphere1 = new THREE.Mesh(
+    new THREE.SphereGeometry(1, 50, 50),
+    new THREE.MeshStandardMaterial({
+      roughness: 0,
+      metalness: 0.5,
+      color: 0xffffff,
+    })
+  );
+  scene.add(sphere1);
+  sphere1.position.x = 0.5;
+
+
+  //DAT GUI inside HDRI
+  // const gui = new dat.GUI();
+
+  const options = {
+    sphereColor: "#ffea00",
+    wireframe: false,
+  };
+
+  gui.addColor(options, "sphereColor").onChange(function (e) {
+    sphere1.material.color.set(e);
+  });
+
+  gui.add(options, "wireframe").onChange(function (e) {
+    sphere1.material.wireframe = e;
+  });
 });
 
 
-//DAT.GUI
-// const gui = new dat.GUI();
-
-// const options = {
-//     sphereColor: '#ffea00'
-
-// };
-
-// gui.addColor(options, 'sphereColor').onChange(function(e){
-//   sphere.material.color.set(e);
-// });
-
-// gui.add(options, 'wireframe').onChange(function(e){
-//     mesh.material.wireframe = e;
-// });
-
-// gui.add(options, 'speed', 0, 0.1);
-
-// gui.add(options, 'angle', 0, 1);
-// gui.add(options, 'penumbra', 0, 1);
-// gui.add(options, 'intensity', 0, 1);
-
 // ORBIT CONTROLS
 const orbitControls = new OrbitControls(camera, renderer.domElement);
-orbitControls.autoRotate = true
-orbitControls.autoRotateSpeed = 7
+orbitControls.autoRotate = true;
+orbitControls.autoRotateSpeed = 7;
+
+let step = 0;
 
 //Game loop
 function animate() {
   // mesh.rotation.x += 0.01;
   // mesh.rotation.y += 0.01;
 
-
   orbitControls.update(); // Make sure to call this after any change to the controls and camera.position
-
 
   renderer.render(scene, camera);
 }
